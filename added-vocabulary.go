@@ -403,9 +403,8 @@ func (av *AddedVocabulary) findMatches(sentence string, splitRe matchingSet) (re
 		}
 	}
 
-	// Sort id-offsets by start then by pattern id
+	// Sort id-offsets by start
 	sort.Sort(byStart(ioPairs))
-	sort.Sort(byId(ioPairs))
 
 	// Select the matches, if they overlap, keep them
 	var (
@@ -419,19 +418,6 @@ func (av *AddedVocabulary) findMatches(sentence string, splitRe matchingSet) (re
 
 		// current match is before the current offset, skip it
 		if ioPair.offsets[0] < currentOffsets {
-			i++
-			continue
-		}
-
-		// Find out whether having overlapping neighbours.
-		// If so, keep the one with lowest Idx. All other will be skipped
-		// because `currentOffsets` will have been increased.
-		if i+1 < len(ioPairs) {
-			overlapPairs := ioPairs[i:]
-			sort.Sort(byId(overlapPairs))
-			lowestPair := overlapPairs[0] // lowest Id one
-			splits = append(splits, lowestPair)
-			currentOffsets = ioPair.offsets[1]
 			i++
 			continue
 		}
