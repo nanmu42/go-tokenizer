@@ -105,6 +105,8 @@ func (pt *PreTokenizedString) Normalize(nFn func(*normalizer.NormalizedString) *
 			newSplit := split
 			newSplit.normalized = nFn(split.normalized)
 			nSplits = append(nSplits, newSplit)
+		} else {
+			nSplits = append(nSplits, split)
 		}
 	}
 
